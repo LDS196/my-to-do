@@ -1,16 +1,19 @@
 import React from 'react';
-
+import {FilterType} from "../App";
+import s from './Button.module.css'
 type ButtonType = {
-    title: string
+    title: FilterType |string
+    filter: FilterType
     callback: () => void
 }
-const Button: React.FC<ButtonType> = ({title, callback}) => {
-    const onClickHandler = () => {
-        callback()
-    }
+const Button: React.FC<ButtonType> = ({title, callback,filter}) => {
+    // const onClickHandler = () => {
+    //     callback()
+    // }
+
     return (
         <div>
-            <button onClick={onClickHandler}>{title}</button>
+            <button className={ filter===title? s.active: undefined} onClick={callback}>{title}</button>
         </div>
     );
 };
