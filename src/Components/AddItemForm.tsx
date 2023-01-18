@@ -1,4 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import {Button, IconButton, TextField} from "@mui/material";
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 type AddItemFormType = {
     addItem: (value: string) => void
@@ -23,9 +25,17 @@ export const AddItemForm: React.FC<AddItemFormType> = ({addItem}) => {
 
     return (
         <div>
-            <input onChange={onChangeHandler} value={inputValue} onKeyDown={onKeyDownHandler}/>
-            <button onClick={onClickAddItemHandler}>Add</button>
-            <p>{error ? error : ''}</p>
+            <TextField
+                error={!!error ? !!error : !!''}
+                multiline
+                maxRows={4}
+                size={"small"}
+                label="Enter title" variant="outlined"
+                onChange={onChangeHandler} value={inputValue} onKeyDown={onKeyDownHandler}/>
+            <IconButton size={"small"}  onClick={onClickAddItemHandler} color={"primary"}>
+                <AddBoxIcon/>
+            </IconButton>
+            <p className={error ? 'error' : ''}>{error ? error : ''}</p>
 
         </div>
 
