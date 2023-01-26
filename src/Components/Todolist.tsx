@@ -1,5 +1,5 @@
 import React, {ChangeEvent} from 'react';
-import {FilterType, TaskType} from "../App";
+import {FilterValuesType, TaskType} from "../App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import BackspaceIcon from '@mui/icons-material/Backspace';
@@ -11,8 +11,8 @@ type TodolistPropsType = {
     addTask: (value: string, todolistId: string) => void
     todolistId: string
     removeTask: (taskId: string, todolistId: string) => void
-    filter: FilterType
-    changeFilterTodolist: (value: FilterType, todolistId: string) => void
+    filter: FilterValuesType
+    changeFilterTodolist: (value: FilterValuesType, todolistId: string) => void
     changeStatusTask: (taskId: string, todolistId: string, isDone: boolean) => void
     removeTodolist: (todolistId: string) => void
     onChangeTitleTask: (value: string, todolistId: string, taskId: string) => void
@@ -28,7 +28,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
     const addNewTask = (value: string) => {
         addTask(value, todolistId)
     }
-    const onClickChangeFilterTodolist = (value: FilterType) => {
+    const onClickChangeFilterTodolist = (value: FilterValuesType) => {
         changeFilterTodolist(value, todolistId)
     }
     const onClickRemoveTodolist = () => {
