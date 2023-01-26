@@ -1,9 +1,11 @@
 import React, {ChangeEvent} from 'react';
-import {FilterValuesType, TaskType} from "../App";
+
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import BackspaceIcon from '@mui/icons-material/Backspace';
-import {Button, Checkbox, Grid, IconButton} from "@mui/material";
+import {Button, Checkbox, IconButton} from "@mui/material";
+import {TaskType} from "../store/tasks-reducer";
+import {FilterValuesType} from "../store/todolists-reducer";
 
 type TodolistPropsType = {
     title: string

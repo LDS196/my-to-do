@@ -1,12 +1,11 @@
-import { TasksStateType} from "../App";
+
 import {
-    ADD_TASK, ADD_TODOLIST,
+    ADD_TASK,
     CHANGE_TASK_STATUS, CHANGE_TASK_TITLE,
     REMOVE_TASK,
-    REMOVE_TODOLIST
 } from "./constants";
 import {v1} from "uuid";
-import {AddTodolistAT} from "./todolists-reducer";
+import {AddTodolistAT, RemoveTodolistAT, todolist_1, todolist_2} from "./todolists-reducer";
 
 export type RemoveTaskAT = {
     type: typeof REMOVE_TASK
@@ -30,20 +29,31 @@ export type ChangeStatusTaskAT = {
     todolistId: string
     isDone: boolean
 }
-export type RemoveTodolistAT = {
-    type: typeof REMOVE_TODOLIST
+
+export type TaskType = {
     id: string
+    title: string
+    isDone: boolean
 }
-// export type AddTodolistAT = {
-//     type: typeof ADD_TODOLIST
-//     title:string
-//     id: string
-//
-// }
+export type TasksStateType = {
+    [todolistId: string]: TaskType[]
+}
+const defaultTasks:TasksStateType= {
+        [todolist_1]: [
+            {id: v1(), title: "HTML & CSS", isDone: true},
+            {id: v1(), title: "ES6 & TS", isDone: true},
+            {id: v1(), title: "REACT", isDone: false},
+        ],
+        [todolist_2]: [
+            {id: v1(), title: "Water", isDone: true},
+            {id: v1(), title: "Meat", isDone: true},
+            {id: v1(), title: "Milk", isDone: false},
+        ]
+    }
 
 type ActionType= RemoveTaskAT | AddTaskAT| OnChangeTitleTaskAT | ChangeStatusTaskAT|RemoveTodolistAT|AddTodolistAT
 
-export const tasksReducer = (tasks: TasksStateType, action: ActionType): TasksStateType => {
+export const tasksReducer = (tasks: TasksStateType=defaultTasks, action: ActionType): TasksStateType => {
 
     switch (action.type) {
         case 'REMOVE_TASK':
@@ -60,7 +70,6 @@ export const tasksReducer = (tasks: TasksStateType, action: ActionType): TasksSt
             delete copyTasks[action.id]
             return copyTasks
         case 'ADD_TODOLIST':
-
             return {...tasks, [action.id]: []}
         default:
             return tasks

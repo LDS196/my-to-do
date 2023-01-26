@@ -4,9 +4,9 @@ import {
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeTaskAC,
-    tasksReducer
+    tasksReducer, TasksStateType
 } from "./tasks-reducer";
-import { TasksStateType,} from "../App";
+
 import {addTodolistAC,removeTodolistAC,} from "./todolists-reducer";
 
 test('correct task should be removed', () => {
