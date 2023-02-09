@@ -1,22 +1,12 @@
 import React from 'react';
 import './App.css';
-
 import {Todolist} from "./Components/Todolist";
 import {AddItemForm} from "./Components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
-import {
-    addTaskAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
-    removeTaskAC,
-    TasksStateType, TaskType
-} from "./store/tasks-reducer";
+
 import {
     addTodolistAC,
-    changeTodoListFilterAC,
-    changeTodolistTitleAC, FilterValuesType,
-    removeTodolistAC,
     TodolistType
 } from "./store/todolists-reducer";
 import {useDispatch, useSelector} from "react-redux";
@@ -31,21 +21,14 @@ function App() {
         dispatch(addTodolistAC(title))
     }
 
-
-
-
-
     let todolist = todolists.map((tl: TodolistType) => {
         return <Grid key={tl.id} item sx={{maxWidth: '400px'}}>
             <Paper elevation={3} sx={{p: '10px'}}>
                 <Todolist
                     todolist={tl}
-
                           />
             </Paper>
         </Grid>
-
-
     })
     return (
         <div className="App">
@@ -74,8 +57,6 @@ function App() {
                     {todolist}
                 </Grid>
             </Container>
-
-
         </div>
     );
 }
