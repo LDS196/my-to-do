@@ -8,13 +8,14 @@ import {
 } from "./tasks-reducer";
 
 import {addTodolistAC,removeTodolistAC,} from "./todolists-reducer";
+let todolistId1:string;
+let todolistId2:string;
+let startState: TasksStateType;
+beforeEach(()=>{
+    todolistId1 = v1();
+    todolistId2 = v1();
 
-test('correct task should be removed', () => {
-    //data
-    let todolistId1 = v1();
-    let todolistId2 = v1();
-
-    const startState: TasksStateType = {
+     startState = {
         [todolistId1]: [
             {id: v1(), title: "HTML & CSS", isDone: true},
             {id: v1(), title: "ES6 & TS", isDone: true},
@@ -26,6 +27,11 @@ test('correct task should be removed', () => {
             {id: v1(), title: "Milk", isDone: false},
         ]
     }
+})
+
+test('correct task should be removed', () => {
+    //data
+
     const taskId = startState[todolistId1][1].id
     //code
 
@@ -36,21 +42,7 @@ test('correct task should be removed', () => {
 });
 test('correct task should be added', () => {
     //data
-    let todolistId1 = v1();
-    let todolistId2 = v1();
 
-    const startState: TasksStateType = {
-        [todolistId1]: [
-            {id: v1(), title: "HTML & CSS", isDone: true},
-            {id: v1(), title: "ES6 & TS", isDone: true},
-            {id: v1(), title: "REACT", isDone: false},
-        ],
-        [todolistId2]: [
-            {id: v1(), title: "Water", isDone: true},
-            {id: v1(), title: "Meat", isDone: true},
-            {id: v1(), title: "Milk", isDone: false},
-        ]
-    }
     const newTaskTitle = "Bread"
     //code
 
@@ -61,21 +53,7 @@ test('correct task should be added', () => {
 });
 test('correct title of task title should be changed', () => {
     //data
-    let todolistId1 = v1();
-    let todolistId2 = v1();
 
-    const startState: TasksStateType = {
-        [todolistId1]: [
-            {id: v1(), title: "HTML & CSS", isDone: true},
-            {id: v1(), title: "ES6 & TS", isDone: true},
-            {id: v1(), title: "REACT", isDone: false},
-        ],
-        [todolistId2]: [
-            {id: v1(), title: "Water", isDone: true},
-            {id: v1(), title: "Meat", isDone: true},
-            {id: v1(), title: "Milk", isDone: false},
-        ]
-    }
     const newTaskTitle = "Bread"
     const taskIdForChanging = startState[todolistId2][1].id
     //code
@@ -87,21 +65,7 @@ test('correct title of task title should be changed', () => {
 });
 test('correct status task should be changed', () => {
     //data
-    let todolistId1 = v1();
-    let todolistId2 = v1();
 
-    const startState: TasksStateType = {
-        [todolistId1]: [
-            {id: v1(), title: "HTML & CSS", isDone: true},
-            {id: v1(), title: "ES6 & TS", isDone: true},
-            {id: v1(), title: "REACT", isDone: false},
-        ],
-        [todolistId2]: [
-            {id: v1(), title: "Water", isDone: true},
-            {id: v1(), title: "Meat", isDone: true},
-            {id: v1(), title: "Milk", isDone: false},
-        ]
-    }
     const newStatus: boolean = false
     const taskIdForChanging = startState[todolistId1][0].id
     //code
@@ -113,20 +77,7 @@ test('correct status task should be changed', () => {
 });
 test('correct array of tasks should be removed', () => {
     //data
-    let todolistId1 = v1();
-    let todolistId2 = v1();
-    const startState: TasksStateType = {
-        [todolistId1]: [
-            {id: v1(), title: "HTML & CSS", isDone: true},
-            {id: v1(), title: "ES6 & TS", isDone: true},
-            {id: v1(), title: "REACT", isDone: false},
-        ],
-        [todolistId2]: [
-            {id: v1(), title: "Water", isDone: true},
-            {id: v1(), title: "Meat", isDone: true},
-            {id: v1(), title: "Milk", isDone: false},
-        ]
-    }
+
     //code
     const endState = tasksReducer(startState, removeTodolistAC(todolistId1))
     //checking
@@ -134,22 +85,8 @@ test('correct array of tasks should be removed', () => {
 
 });
 test('correct new array of tasks  should be added for new todolist', () => {
-    let todolistId1 = v1();
-    let todolistId2 = v1();
-    const title = 'New Todolist'
 
-    const startState: TasksStateType = {
-        [todolistId1]: [
-            {id: v1(), title: "HTML & CSS", isDone: true},
-            {id: v1(), title: "ES6 & TS", isDone: true},
-            {id: v1(), title: "REACT", isDone: false},
-        ],
-        [todolistId2]: [
-            {id: v1(), title: "Water", isDone: true},
-            {id: v1(), title: "Meat", isDone: true},
-            {id: v1(), title: "Milk", isDone: false},
-        ]
-    }
+    const title = 'New Todolist'
 
     const endState = tasksReducer(startState, addTodolistAC(title))
     const keys = Object.keys(endState)

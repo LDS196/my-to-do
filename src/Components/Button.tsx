@@ -4,10 +4,6 @@ type ButtonType = {
 
 }
 const Button: React.FC<ButtonType> = () => {
-    // const onClickHandler = () => {
-    //     callback()
-    // }
-
     return (
         <div>
             <button></button>
