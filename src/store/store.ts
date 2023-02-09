@@ -13,3 +13,5 @@ export type RootStateType = ReturnType<typeof reducer>
 
  export const store= createStore(reducer)
 
+// @ts-ignore
+window.store=store

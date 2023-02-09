@@ -4,52 +4,69 @@ import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import {Button, Checkbox, IconButton} from "@mui/material";
-import {TaskType} from "../store/tasks-reducer";
-import {FilterValuesType} from "../store/todolists-reducer";
+import {
+    addTaskAC,
+    changeTaskStatusAC,
+    changeTaskTitleAC,
+    removeTaskAC,
+    TasksStateType,
+    TaskType
+} from "../store/tasks-reducer";
+import {
+    changeTodoListFilterAC,
+    changeTodolistTitleAC,
+    FilterValuesType,
+    removeTodolistAC, TodolistType
+} from "../store/todolists-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {RootStateType} from "../store/store";
 
 type TodolistPropsType = {
-    title: string
-    tasks: TaskType[]
-    addTask: (value: string, todolistId: string) => void
-    todolistId: string
-    removeTask: (taskId: string, todolistId: string) => void
-    filter: FilterValuesType
-    changeFilterTodolist: (value: FilterValuesType, todolistId: string) => void
-    changeStatusTask: (taskId: string, todolistId: string, isDone: boolean) => void
-    removeTodolist: (todolistId: string) => void
-    onChangeTitleTask: (value: string, todolistId: string, taskId: string) => void
-    onChangeSetTitleTodolist: (title: string, todolistId: string) => void
+    todolist: TodolistType
+
 }
 export const Todolist: React.FC<TodolistPropsType> = (props) => {
+    const {id,title, filter,} = props.todolist
+    const tasks = useSelector<RootStateType, TaskType[]>((state) => state.tasksReducer[id])
+    const dispatch = useDispatch()
+    const getTasksForRender = (tasks: Array<TaskType>, filter: FilterValuesType) => {
+        switch (filter) {
+            case 'active':
+                return tasks.filter((t => !t.isDone));
+            case 'completed':
+                return tasks.filter((t => t.isDone));
+            default:
+                return tasks
+        }
+    }
 
-    const {
-        title, tasks, addTask, todolistId, removeTask, filter,
-        changeFilterTodolist, changeStatusTask, removeTodolist, onChangeTitleTask,
-        onChangeSetTitleTodolist
-    } = props
+
     const addNewTask = (value: string) => {
-        addTask(value, todolistId)
+        dispatch(addTaskAC(value, id))
     }
     const onClickChangeFilterTodolist = (value: FilterValuesType) => {
-        changeFilterTodolist(value, todolistId)
+
+        dispatch(changeTodoListFilterAC(value, id))
+
     }
     const onClickRemoveTodolist = () => {
-        removeTodolist(todolistId)
+        dispatch(removeTodolistAC(id))
     }
     const onChangeTitleTodolist = (title: string) => {
-        onChangeSetTitleTodolist(title, todolistId)
+        dispatch(changeTodolistTitleAC(title, id))
     }
 
     let tasksForRender = tasks.length
-        ? tasks.map(t => {
+        ? getTasksForRender(tasks,filter).map(t => {
             const removeTaskHandler = () => {
-                removeTask(t.id, todolistId)
+                dispatch(removeTaskAC(t.id, id))
             }
             const onChangeSetTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
-                changeStatusTask(t.id, todolistId, e.currentTarget.checked)
+                dispatch(changeTaskStatusAC(t.id, id, e.currentTarget.checked))
             }
             const onChangeTitle = (value: string,) => {
-                onChangeTitleTask(value, todolistId, t.id)
+                dispatch(changeTaskTitleAC(value, id, t.id))
+
             }
             return <li className={'task'} key={t.id}>
                 <Checkbox size={"small"} checked={t.isDone}
@@ -91,8 +108,6 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                         onClick={() => onClickChangeFilterTodolist('active')}>active
                 </Button>
             </div>
-
-
         </div>
     );
 };
