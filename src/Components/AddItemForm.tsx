@@ -5,11 +5,19 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 type AddItemFormType = {
     addItem: (value: string) => void
 }
-export const AddItemForm: React.FC<AddItemFormType> = ({addItem}) => {
+export const AddItemForm: React.FC<AddItemFormType> = React.memo(({addItem}) => {
+    console.log('AddItemForm')
     const errorText = 'Please, enter item title'
     let [inputValue, setInputValue] = useState<string>('')
-    let [error, setError] = useState<string>('')
-    const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && onClickAddItemHandler();
+    let [error, setError] = useState<string|null>(null)
+    const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if(e.key === 'Enter') {
+            onClickAddItemHandler()
+        }
+        if(error!==null){
+            setError(null)
+        }
+    };
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setError('')
         setInputValue(e.currentTarget.value)
@@ -40,4 +48,4 @@ export const AddItemForm: React.FC<AddItemFormType> = ({addItem}) => {
         </div>
 
     )
-}
+})

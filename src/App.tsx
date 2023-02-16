@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useMemo} from 'react';
 import './App.css';
 import {Todolist} from "./Components/Todolist";
 import {AddItemForm} from "./Components/AddItemForm";
@@ -13,19 +13,22 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootStateType} from "./store/store";
 
 
-function App() {
+const App=()=> {
+    console.log('App')
     const dispatch = useDispatch()
     const todolists = useSelector<RootStateType, TodolistType[]>((state) => state.todolistsReducer)
 
-    const addTodolist = (title: string) => {
+    const addTodolist = useCallback((title: string) => {
         dispatch(addTodolistAC(title))
-    }
+    },[])
 
-    let todolist = todolists.map((tl: TodolistType) => {
+    let todolist =  todolists.map((tl: TodolistType) => {
         return <Grid key={tl.id} item sx={{maxWidth: '400px'}}>
             <Paper elevation={3} sx={{p: '10px'}}>
                 <Todolist
-                    todolist={tl}
+                    id={tl.id}
+                    title={tl.title}
+                    filter={tl.filter}
                           />
             </Paper>
         </Grid>

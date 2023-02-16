@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback, useState} from 'react';
 
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
@@ -9,27 +9,27 @@ import {
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeTaskAC,
-    TasksStateType,
     TaskType
 } from "../store/tasks-reducer";
 import {
     changeTodoListFilterAC,
     changeTodolistTitleAC,
     FilterValuesType,
-    removeTodolistAC, TodolistType
+    removeTodolistAC,
 } from "../store/todolists-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootStateType} from "../store/store";
 
 type TodolistPropsType = {
-    todolist: TodolistType
-
+    id:string
+    title:string
+    filter: FilterValuesType
 }
-export const Todolist: React.FC<TodolistPropsType> = (props) => {
-    const {id,title, filter,} = props.todolist
+export const Todolist: React.FC<TodolistPropsType> = React.memo(({id,title,filter}) => {
+    console.log('Todolist')
     const tasks = useSelector<RootStateType, TaskType[]>((state) => state.tasksReducer[id])
     const dispatch = useDispatch()
-    const getTasksForRender = (tasks: Array<TaskType>, filter: FilterValuesType) => {
+    const getTasksForRender = useCallback((tasks: Array<TaskType>, filter: FilterValuesType) => {
         switch (filter) {
             case 'active':
                 return tasks.filter((t => !t.isDone));
@@ -38,23 +38,21 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
             default:
                 return tasks
         }
-    }
+    },[filter])
 
 
-    const addNewTask = (value: string) => {
+    const addNewTask = useCallback((value: string) => {
         dispatch(addTaskAC(value, id))
-    }
-    const onClickChangeFilterTodolist = (value: FilterValuesType) => {
-
+    },[id])
+    const onClickChangeFilterTodolist = useCallback((value: FilterValuesType) => {
         dispatch(changeTodoListFilterAC(value, id))
-
-    }
-    const onClickRemoveTodolist = () => {
+    },[id])
+    const onClickRemoveTodolist = useCallback(() => {
         dispatch(removeTodolistAC(id))
-    }
-    const onChangeTitleTodolist = (title: string) => {
+    },[id])
+    const onChangeTitleTodolist = useCallback((title: string) => {
         dispatch(changeTodolistTitleAC(title, id))
-    }
+    },[id])
 
     let tasksForRender = tasks.length
         ? getTasksForRender(tasks,filter).map(t => {
@@ -110,4 +108,4 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
             </div>
         </div>
     );
-};
+});
